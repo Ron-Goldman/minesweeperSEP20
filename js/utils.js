@@ -19,6 +19,8 @@ function getNeighborsCount(cellI, cellJ, board) {
     return negCount;
 }
 
+
+
 function disableContextMenu() {
     window.addEventListener('contextmenu', function (e) {
         document.body.innerHTML += ''
