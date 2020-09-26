@@ -9,9 +9,9 @@ var gFlags = 3
 var gScore = 0
 
 var gLevel = [
-    { rows: 4, cols: 6, mines: 3, },
-    { rows: 9, cols: 12, mines: 8 },
-    { rows: 13, cols: 20, mines: 18 }
+    { rows: 4, cols: 4, mines: 3, },
+    { rows: 8, cols: 8, mines: 12 },
+    { rows: 12, cols: 12, mines: 30 }
 ]
 
 var gGame = {
@@ -135,8 +135,14 @@ function cellClicked(elCell, i, j) {
         cell.isShown;
         gGame.isOn = false;
         var elMessageBox = document.querySelector('.message-box')
-        elMessageBox.innerText = ` BOOM! you have ${gLives} more life`
+        elMessageBox.innerText = ` BOOM! you have ${gLives} more life `
         elMessageBox.style.display = 'block'
+        var elLives = document.querySelectorAll('.modal h2')
+        
+        setTimeout(() => {
+            elLives[1].style.backgroundColor = 'red'
+            
+        }, 500);
 
 
     }
@@ -145,18 +151,26 @@ function cellClicked(elCell, i, j) {
 
 function markFlag(elCell, i, j) {
     var cell = board[i][j]
-    if (!cell.isShown && gFlags > 0) {
+    if (cell.isMarked) {
+       cell.isShown = false;
+       cell.isMarked = false;
+       elCell.innerText = ''
+       elCell.classList.remove('cell-clicked')
+       console.log('test');
+       return;
+   }
+    if (!cell.isShown && gFlags >= 0) {
         gFlags--
         updateFlags()
         elCell.innerText = FLAG
         var cell = board[i][j]
         cell.isShown = true;
         cell.isMarked = true;
-        elCell.classList.add('cell-clicked')
+        //elCell.classList.add('cell-clicked')
         checkGameWon(board)
-        console.log(elCell);
-        console.log(cell);
-    }
+        //console.log(elCell);
+        //console.log(cell);
+    } 
 
 }
 
@@ -220,6 +234,7 @@ function showMines(bombs, board) {
 
         board[bombs[i].i][bombs[i].j].isShown = true;
         console.log(board[bombs[i].i][bombs[i].j]);
+        
     }
 
     renderBoard(board)
@@ -228,7 +243,9 @@ function showMines(bombs, board) {
 function updateFlags() {
     var elFlagSpan = document.querySelector('h2 span')
     elFlagSpan.innerText = gFlags;
+    
 }
+
 
 function updateScore() {
     gScore = 0
@@ -254,6 +271,7 @@ function revealNeighbors(cellI, cellJ, board) {
                 if (j < 0 || j >= board[i].length) continue;
                 if (i === cellI && j === cellJ) continue;
                 board[i][j].isShown = true;
+                
                 
 
                 // if (board[i][j].minesAroundCount === 0 && !board[cellI][cellJ].isMine) {
@@ -285,10 +303,17 @@ function useLife(elLife) {
     // console.log('life left: ', gLives);
     var elMessageBox = document.querySelector('.message-box')
     elMessageBox.style.display = 'none'
+
+    var elLives = document.querySelectorAll('.modal h2')
+    elLives[1].style.backgroundColor = ''
+
 }
 
+function test() {
 
-
+    var elCell = document.querySelector("cell 6 - 6 ")
+    elCell.innerText = 'fsdfsdgfs'
+}
 
 
 
